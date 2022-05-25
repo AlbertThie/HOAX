@@ -34,7 +34,7 @@
         "optimizer": "adam",
         "activation" : "tanh",
 		"loss_function" : "MSE",
-        "model_filename" : "Network.pt",
+        "model_filename" : "Network.pt"
 		
             },
 	"grid_search":{
