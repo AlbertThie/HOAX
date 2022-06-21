@@ -6,6 +6,7 @@ class JsonParser():
         with open(configName) as f:
             config = json.loads(f.read())
         self.config = config['config']
+        self.neuralnetwork = self.config['neural_network']
         self.optimizer = self.setOptimizer()
 
 
@@ -26,3 +27,15 @@ class JsonParser():
 
     def getDatabase(self):
         return self.config['database']
+
+    def getLoggingFile(self):
+        return self.neuralnetwork['logging_file']
+
+    def getEpochs(self):
+        return self.neuralnetwork['epochs']
+
+    def getEpochStep(self):
+        return self.neuralnetworkjson['epoch_step']
+
+    def getConfig(self):
+        return self.config
