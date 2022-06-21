@@ -1,81 +1,21 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-
-import json 
-from netCDF4 import Dataset
 import numpy as np
-from scipy.spatial.distance import pdist
+
 import random
-from sklearn.model_selection import train_test_split
+
 import NeuralNetwork
 from GridSearch import GridSearch
-import tables as tb
-import argparse
-
+import tables as tbe
+from ArgParser import ArgParser
+from JsonParser import JsonParser
 import math
+from DatabaseLoader import DatabaseLoader
+
+
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
-    parser = argparse.ArgumentParser("simple_example")
-    parser.add_argument("counter", help="An integer will be increased by 1 and printed.", type=int)
-    args = parser.parse_args()
-def main(argv):
-
-
-
-    with open('configSO.json') as f:
-      print(f)
-      config = json.loads(f.read())
-    import random
-
-    print(config)
-
-
-    # In[2]:
-
-
-
-    lowest_error, best_network = math.inf, None
-    sizebounds = config['config']['grid_search']['hiddenlayer_size']
-    layerbounds = config['config']['grid_search']['hiddenlayer_number']
-    learningbounds = config['config']['grid_search']['learning_rates']
-
-
-    print(random.randint(sizebounds[0],sizebounds[1]))
-    print(random.choice(learningbounds))
-
-    #for n in range(self.config['config']['simulated_annealing']['iterations']) :
-
-        
-
-
-    # In[3]:
-
-
-    database = config['config']["database"]["file"]
-    data = Dataset(database, mode='r')
-    if config['config']["database"]["crdmode"] == "cartesian":
-        dbset = np.copy(data['crd'])
-        coordinatesout = []
-        for j,i in enumerate(dbset):
-            if j == 0:
-                coordinatesout = [pdist(i)]
-            else:
-                coordinatesout = np.concatenate((coordinatesout,[pdist(i)]))
-                
-    energyout =np.copy(data['energy'])-np.amin(data['energy'])     
-    print(coordinatesout)
-    print(energyout)
-
-
-    # In[4]:
-
-
-    coordinates, val_coordinates, output, val_output = train_test_split(coordinatesout, energyout , test_size=config['config']['grid_search']['validation_ratio'])
-
-    print(output,val_output)
-    print(coordinates, val_coordinates)
+    parser = ArgParser()
+    jsonparser = JsonParser(parser.getConfigName())
+    database = DatabaseLoader(parser.getDatabaseName(),jsonparser.getDatabase())
 
 
     num = config['config']["neural_network"]["epochs"]/config['config']["neural_network"]["epoch_step"]
@@ -107,8 +47,6 @@ def main(argv):
             optimizer.run()
             
             
-
-
 
 
 
