@@ -19,19 +19,19 @@ if __name__ == "__main__":
     logger = Logger(jsonparser.getLoggingFile(),jsonparser.getEpochs(),jsonparser.getEpochStep())
 
 
-    if JsonParser.getOptimizer() == "grid_search":
+    if jsonparser.getOptimizer() == "grid_search":
         optimizer = GridSearch(jsonparser,database,logger)
         optimizer.run()
 
-    elif  JsonParser.getOptimizer() == "random_search":
+    elif  jsonparser.getOptimizer() == "random_search":
         optimizer = RandomSearch(config,coordinates,  output,val_coordinates, val_output)
         optimizer.run()
 
-    elif  JsonParser.getOptimizer() == "simulated_anneaing":
+    elif  jsonparser.getOptimizer() == "simulated_anneaing":
         optimizer = SimulatedAnnealing(config,coordinates,  output,val_coordinates, val_output)
         optimizer.run()
 
-    elif  JsonParser.getOptimizer() ==  "genetic_algorithm":
+    elif  jsonparser.getOptimizer() ==  "genetic_algorithm":
         optimizer = GeneticAlgorithm(config,coordinates,  output,val_coordinates, val_output)
         optimizer.run()
     else:

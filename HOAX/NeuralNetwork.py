@@ -24,28 +24,26 @@ import matplotlib.pyplot as plt
 import tables as tb
 
 class NeuralNetwork():
-    def __init__(self, config, train_input,train_output,val_input,val_output,
+    def __init__(self, jsonparser, database,logger,
                  hiddenlayer_size,hiddenlayer_number, learning_rate,batch_size ): 
        
-        self.dataset = NNDataset(train_input,train_output)
-        self.validationset = NNDataset(val_input,val_output)
+        self.dataset = NNDataset(database.getInput(),database.getOutput())
+        self.validationset = NNDataset(database.getValInput(),database.getValOutput())
         self.dataloader = DataLoader(self.dataset, batch_size=batch_size,shuffle= 'True')
         self.hiddenlayer_size = hiddenlayer_size
         self.batch_size = batch_size
         self.hiddenlayer_number = hiddenlayer_number
         self.learning_rate = learning_rate
         #self.dataset.output_shape()
-        self.epochs = config['config']['neural_network']['epochs']
-        self.epoch_step = config['config']['neural_network']['epoch_step']
-        self.weights_file = "pytorchweights.ph"
-        self.model_filename = config['config']['neural_network']['model_filename']
-
-        self.loggingfile = config['config']['neural_network']['logging_file']
-        self.printingfile = config['config']['neural_network']['plotting_file']
-        network = NeuralNet( len(train_input[0]), hiddenlayer_size, hiddenlayer_number, len(train_output[0]),  
-                              config['config']['neural_network']['activation'])
+        self.epochs = jsonparser.getEpochs()
+        self.epoch_step = jsonparser.getEpochStep()
+        self.weights_file = jsonparser.getWeightsFile()
+        self.model_filename = jsonparser.getModelFile()
+        self.loggingfile = jsonparser.getLoggingFile()
+        network = NeuralNet( len(database.getInput()[0]), hiddenlayer_size, hiddenlayer_number, len(database.getOutput()[0]),  
+                              jsonparser.getActivation())
         self.model = network.model
-        self.loss_fn = self.get_loss_function(config['config']['neural_network']['loss_function'])
+        self.loss_fn = self.get_loss_function(jsonparser.getLossFunction())
         self.model.double()
     # Use the optim package to define an Optimizer that will update the weights of
     # the model for us. Here we will use Adam; the optim package contains many other
@@ -94,28 +92,10 @@ class NeuralNetwork():
 
             for index, data in enumerate(self.dataloader,0):
                 local_batch, local_labels = data
-                #print(local_batch)
-                # Forward pass: compute predicted y by passing x to the model.
                 y_pred = self.model(local_batch)
-
-                # Compute and print loss.
-                #print(y_pred)
-                #print(local_labels)
-                loss = self.loss_fn(y_pred, local_labels)
-                #print(loss)
-
-                # Before the backward pass, use the optimizer object to zero all of the
-                # gradients for the variables it will update (which are the learnable
-                # weights of the model). This is because by default, gradients are
-                # accumulated in buffers( i.e, not overwritten) whenever .backward()
-                # is called. Checkout docs of torch.autograd.backward for more details.
+                loss = self.loss_fn(y_pred, local_labels)               
                 self.optimizer.zero_grad()
-                # Backward pass: compute gradient of the loss with respect to model
-                # parameters
                 loss.backward()
-
-                # Calling the step function on an Optimizer makes an update to its
-                # parameters
                 self.optimizer.step()
                 
 
@@ -127,15 +107,9 @@ class NeuralNetwork():
                     self._save()
                 print(f"{lossprint} {t} {self.hiddenlayer_size} {self.hiddenlayer_number} {self.learning_rate} {self.batch_size}")
                 printinglog.append(lossprint)
-                with open(self.printingfile, 'wb') as f:
-                    pickle.dump(printinglog,f)
-                #file = open(self.loggingfile,"a")
-                #file.write(f"Loss = {lossprint} \n Epochs = {self.epochs} \n Hiddenlayer Size = {self.hiddenlayer_size}  \n Hiddenlayer Number = {self.hiddenlayer_number} \n Learningrate = {self.learning_rate} \n Lowest error = {minimum_loss}\n \n")
-                #file.close()
 
         print("Done Training")
         filesaving = tb.open_file(self.loggingfile,mode="a")
-        print(filesaving)
         root = filesaving.root
         idnumber = 0
         table = root.NeuralNetworkRun.NeuralNetworkRun1
@@ -170,18 +144,7 @@ class NeuralNetwork():
                 testpoint_positions.append(local_batch.tolist())
                 loss = self.loss_fn(y_pred, local_labels)
                 losssquared += loss.item()
-        #print(model_predictions)
         valLoss =np.sqrt(losssquared /len(self.validationset))
-        if valLoss < 0.01 :
-            print(valLoss)
-            #plt.plot(self.validationset.energyCurves.numpy()-np.amin(self.validationset.energyCurves.numpy()))
-            #plt.show()
-            #plt.close()
-            #plt.plot(model_predictions)
-            
-            #plt.savefig(f"graph{valLoss}{self.hiddenlayer_size}l{self.hiddenlayer_number}.png")
-           # plt.show()
-           # plt.close()
         return losssquared
     
     def get_loss_function(self,loss):

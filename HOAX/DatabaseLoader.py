@@ -18,8 +18,20 @@ class DatabaseLoader:
                         self.coordinatesout = np.concatenate((self.coordinatesout,[pdist(i)]))
                 
         self.energyout =np.copy(self.database['energy'])-np.amin(self.database['energy'])     
-        self.coordinates, self.val_coordinates, self.output, self.val_output = train_test_split(self.coordinatesout, self.energyout , test_size=databaseConfig['validation_ratio'])
+        self.input, self.val_input, self.output, self.val_output = train_test_split(self.coordinatesout, self.energyout , test_size=databaseConfig['validation_ratio'])
 
+
+    def getInput(self):
+        return self.input
+
+    def getValInput(self):
+        return self.val_input
+
+    def getOutput(self):
+        return self.output
+
+    def getValOutput(self):
+        return self.val_output
 
 
 

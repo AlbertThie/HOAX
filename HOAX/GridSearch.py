@@ -26,14 +26,14 @@ class GridSearch(Optimizer):
         for g in range(hiddenlayer_size[0],hiddenlayer_size[1],hiddenlayer_size[2]):
            for i in range(hiddenlayer_number[0],hiddenlayer_number[1],hiddenlayer_number[2]):
                for h in self.jsonparser.getConfig()['grid_search']['learning_rates']:
-                    for j in elf.jsonparser.getConfig()['grid_search']['batch_sizes']:
+                    for j in self.jsonparser.getConfig()['grid_search']['batch_sizes']:
                 
-                    network = NeuralNetwork(self.jsonparser, self.database, self.logger,
-                                                    hiddenlayer_size=g,hiddenlayer_number=i, learning_rate=h,batch_size=j) 
-                    temp_error = network.train()
-                    if (temp_error < lowest_error):
-                        lowest_error = temp_error
-                        network.export()
+                        network = NeuralNetwork(self.jsonparser, self.database, self.logger, 
+                                                        hiddenlayer_size=g,hiddenlayer_number=i, learning_rate=h,batch_size=j) 
+                        temp_error = network.train()
+                        if (temp_error < lowest_error):
+                            lowest_error = temp_error
+                            network.export()  
 
-    
+        
 

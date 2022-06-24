@@ -35,7 +35,21 @@ class JsonParser():
         return self.neuralnetwork['epochs']
 
     def getEpochStep(self):
-        return self.neuralnetworkjson['epoch_step']
+        return self.neuralnetwork['epoch_step']
+
+    def getWeightsFile(self):
+        return self.neuralnetwork['weights_file']
+
+    def getModelFile(self):
+        return self.neuralnetwork['model_file']
+
+    def getActivation(self):
+        return self.neuralnetwork['activation']
+
+    def getLossFunction(self):
+        return self.neuralnetwork['loss_function']
+
 
     def getConfig(self):
         return self.config
+
