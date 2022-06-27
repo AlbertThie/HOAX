@@ -12,15 +12,19 @@ class Logger():
                 "learningRate" : tb.Col.from_type("int64"),
                 "validationError" : tb.Col.from_type("float64",(epochs/epochStep,)),   
                     }
-        self.logFile = tb.open_file(loggingFile,mode="w")
+        self.loggingFile = loggingFile
+        self.logFile = tb.open_file(self.loggingFile,mode="w")
         self.root = self.logFile.root
         self.group = self.logFile.create_group(self.root,"NeuralNetworkRun")
         self.gRuns = self.root.NeuralNetworkRun 
         table = self.logFile.create_table("/NeuralNetworkRun","NeuralNetworkRun1",NeuralNetworkRun,"Runs:"+"NeuralNetworkRun1")
         table.flush()
+        print("writng file")
+        print(self.group)
+        print(self.root)
         self.logFile.close()
 
 
 
     def getLogFile(self):
-        return self.logFile
+        return tb.open_file(self.loggingFile,mode="a")

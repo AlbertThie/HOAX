@@ -1,42 +1,34 @@
- #!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
-from .Optimizer import Optimizer
-from .NeuralNetwork import NeuralNetwork
+from Optimizer import Optimizer
+from NeuralNetwork import NeuralNetwork
 import math
 import random
 
-# In[ ]:
+
 
 
 
 class GeneticAlgorithm(Optimizer):
     
     
-    def __init__(self,config,train_input,train_output,val_input,val_output):
-        self.config = config
-        self.train_input = train_input
-        self.train_output = train_output
-        self.val_input = val_input
-        self.val_output = val_output
-        self.nodesbounds = self.config['config']['genetic_algorithm']["hiddenlayer_size"]
-        self.layerbounds = self.config['config']['genetic_algorithm']["hiddenlayer_number"]
-        self.learningbounds = self.config['config']['genetic_algorithm']["learning_rates"]
-        self.learningrate = self.config['config']['genetic_algorithm']["learning_rates"]
-        self.batchsize = self.config['config']['genetic_algorithm']['batch_size']
+    def __init__(self,jsonparser,database, logger):
+        self.database = database
+        self.jsonparser = jsonparser
+        self.logger = logger
+        self.nodesbounds = self.jsonparser.getConfig()['genetic_algorithm']["hiddenlayer_size"]
+        self.layerbounds = self.jsonparser.getConfig()['genetic_algorithm']["hiddenlayer_number"]
+        self.learningbounds = self.jsonparser.getConfig()['genetic_algorithm']["learning_rates"]
+        self.batchsize = self.jsonparser.getConfig()['genetic_algorithm']['batch_size']
+
         self.nodes = [i for i in range(self.nodesbounds[0],self.nodesbounds[1],self.nodesbounds[2])]
         self.layers = [i for i in range(self.layerbounds[0],self.layerbounds[1],self.layerbounds[2])]
-        self.iterations = self.config['config']['genetic_algorithm']['iterations']
+        self.iterations = self.jsonparser.getConfig()['genetic_algorithm']['iterations']
         self.searchlog = {}
-        self.mutationrate = self.config['config']['genetic_algorithm']["mutation_rate"]
-        self.population_size = self.config['config']['genetic_algorithm']["population_size"]
+        self.mutationrate = self.jsonparser.getConfig()['genetic_algorithm']["mutation_rate"]
+        self.population_size = self.jsonparser.getConfig()['genetic_algorithm']["population_size"]
 
         nbound = len(self.nodes) -1
         lbound =len(self.layers) -1
-        ebound = len(self.learningrate) -1
+        ebound = len(self.learningbounds) -1
         bbound = len(self.batchsize) -1
         nbitsize= len('{0:b}'.format(nbound-1))
         lbitsize= len('{0:b}'.format(lbound-1))
@@ -61,9 +53,9 @@ class GeneticAlgorithm(Optimizer):
         return error
 
     def getNewNetwork(self,positions):
-        network = NeuralNetwork(self.config,self.train_input, self.train_output,self.val_input,self.val_output,
+        network = NeuralNetwork(self.jsonparser, self.database,self.logger,
                                                     hiddenlayer_size= self.nodes[positions[0]], hiddenlayer_number = self.layers[positions[1]], 
-                                                    learning_rate=self.learningrate[positions[2]],batch_size=self.batchsize[positions[3]]) 
+                                                    learning_rate=self.learningbounds[positions[2]],batch_size=self.batchsize[positions[3]]) 
         error = network.train()
         return error 
    
@@ -146,40 +138,3 @@ class GeneticAlgorithm(Optimizer):
 
 
 
-
-
-
-
-
-
-
-    def runold(self):
-        lowest_error, best_networks = math.inf, [None,None]
-
-        hiddenlayer_size = randint(sizebounds[0],sizebounds[1])
-        hiddenlayer_number = randint(layerbounds[0],sizebounds[1])
-        learning_rate = uniform(learningbounds[0],learningbounds[1])
-        network = NeuralNetwork(self.config,self.train_input, self.train_output,self.val_input,self.val_output,
-                                                    hiddenlayer_size= size, hiddenlayer_number = layers, learning_rate=learning_rate) 
-            
-        lowest_error = network.train()
-        best_network = network.export()
-
-
-     
-        for n in range(self.config['config']['genetic_algorithm']['iterations']) :
-            
-            size,layers,learningrate = move(size,layers,learning_rate)
-            
-            network = NeuralNetwork(self.config,self.train_input, self.train_output,self.val_input,self.val_output,
-                                                    hiddenlayer_size=random.randint(sizebounds[0],sizebounds[1]),hiddenlayer_number=random.randint(layerbounds[0],sizebounds[1]), learning_rate=random.choice(learningbounds)) 
-            
-            error = network._train()
-            
-            acceptance_threshold = epx((error-lowest_error)/ (temperature / float(n + 1)))
-            
-            if error < lowest_error or random() < acceptance_threshold :
-                error = lowest_error
-                best_network = network.export()
-                
-    

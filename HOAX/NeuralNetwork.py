@@ -34,7 +34,7 @@ class NeuralNetwork():
         self.batch_size = batch_size
         self.hiddenlayer_number = hiddenlayer_number
         self.learning_rate = learning_rate
-        #self.dataset.output_shape()
+        self.logger = logger
         self.epochs = jsonparser.getEpochs()
         self.epoch_step = jsonparser.getEpochStep()
         self.weights_file = jsonparser.getWeightsFile()
@@ -109,7 +109,8 @@ class NeuralNetwork():
                 printinglog.append(lossprint)
 
         print("Done Training")
-        filesaving = tb.open_file(self.loggingfile,mode="a")
+        filesaving = self.logger.getLogFile()
+        #Rewrite this part to use logger class
         root = filesaving.root
         idnumber = 0
         table = root.NeuralNetworkRun.NeuralNetworkRun1
