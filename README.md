@@ -1,5 +1,5 @@
 
-Hyperparameter Optimisation Algorithms Explorer
+Hyperparameter Optimisation Algorithm Explorer
 ===============================
 
 HOAX can be used to optimise the hyperparameters of machine learning algorithms in quantum chemistry.
