@@ -1,4 +1,4 @@
-===============================
+
 Hyperparameter Optimisation Algorithms Explorer
 ===============================
 
