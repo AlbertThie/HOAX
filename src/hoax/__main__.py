@@ -2,20 +2,19 @@ import numpy as np
 import math
 import random
 
-import NeuralNetwork
-from GridSearch import GridSearch
-from RandomSearch import RandomSearch
-from SimulatedAnnealing import SimulatedAnnealing
-from GeneticAlgorithm import GeneticAlgorithm
-from ArgParser import ArgParser
-from JsonParser import JsonParser
-from Logger import Logger
+from .NeuralNetwork import NeuralNetwork
+from .GridSearch import GridSearch
+from .RandomSearch import RandomSearch
+from .SimulatedAnnealing import SimulatedAnnealing
+from .GeneticAlgorithm import GeneticAlgorithm
+from .ArgParser import ArgParser
+from .JsonParser import JsonParser
+from .Logger import Logger
 
-from DatabaseLoader import DatabaseLoader
+from .DatabaseLoader import DatabaseLoader
 
 
-
-if __name__ == "__main__":
+def main():
     parser = ArgParser()
     jsonparser = JsonParser(parser.getConfigName())
     database = DatabaseLoader(parser.getDatabaseName(),jsonparser.getDatabase())
@@ -41,3 +40,6 @@ if __name__ == "__main__":
         print("No optimizer found")
 
 
+
+if __name__ == "__main__":
+    main()
