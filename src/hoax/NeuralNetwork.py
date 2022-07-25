@@ -109,24 +109,7 @@ class NeuralNetwork():
                 printinglog.append(lossprint)
 
         print("Done Training")
-        filesaving = self.logger.getLogFile()
-        #Rewrite this part to use logger class
-        root = filesaving.root
-        idnumber = 0
-        table = root.NeuralNetworkRun.NeuralNetworkRun1
-        for row in table.iterrows():
-            idnumber +=1
-
-        addTable=table.row 
-        addTable['idNumber'] = idnumber
-        addTable['hiddenLayers'] = self.hiddenlayer_number
-        addTable['nodesPerLayer'] = self.hiddenlayer_size
-        addTable['batchsize'] = self.batch_size
-        addTable['learningRate'] = self.learning_rate
-        addTable['validationError'] =np.array(printinglog)
-        addTable.append()
-        table.flush()
-        filesaving.close()
+        
 
         return minimum_loss
         
