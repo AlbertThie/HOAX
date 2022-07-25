@@ -12,12 +12,14 @@ Installation
 
 Install via pip
 
-:code:`pip install hoax` 
-
+```
+pip install hoax
+```
 Launch from the terminal, call hoax with the database file and config file as arguments.
 
-:code:`hoax ["databasefile"] ["configfile"] (run in terminal)
-
+```
+hoax ["databasefile"] ["configfile"] (run in terminal)
+```
 Config file
 **************
 
