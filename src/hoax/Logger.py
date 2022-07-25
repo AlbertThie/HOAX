@@ -1,5 +1,5 @@
 import tables as tb
-
+import numpy as np
 class Logger():
     def __init__(self,loggingFile,epochs,epochStep):
         self.epochSize = epochs/epochStep
@@ -33,7 +33,8 @@ class Logger():
     def writeRun(self,hiddenlayer_number,hiddenlayer_size,batch_size,learning_rate,printinglog):
         filesaving = self.getLogFile()
         root = filesaving.root
-        addTable=table.row 
+        table = root.NeuralNetworkRun.NeuralNetworkRun1
+        addTable = table.row 
         addTable['idNumber'] = self.idnumber
         addTable['hiddenLayers'] = hiddenlayer_number
         addTable['nodesPerLayer'] = hiddenlayer_size

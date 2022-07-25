@@ -109,7 +109,7 @@ class NeuralNetwork():
                 printinglog.append(lossprint)
 
         print("Done Training")
-        
+        self.logger.writeRun(self.hiddenlayer_number,self.hiddenlayer_size,self.batch_size,self.learning_rate,printinglog)
 
         return minimum_loss
         

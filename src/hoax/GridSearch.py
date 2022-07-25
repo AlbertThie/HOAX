@@ -4,8 +4,8 @@
 # In[ ]:
 
 
-from .Optimizer import Optimizer
-from .NeuralNetwork import NeuralNetwork
+from Optimizer import Optimizer
+from NeuralNetwork import NeuralNetwork
 
 
 # In[ ]:

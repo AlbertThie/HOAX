@@ -2,16 +2,16 @@ import numpy as np
 import math
 import random
 
-from .NeuralNetwork import NeuralNetwork
-from .GridSearch import GridSearch
-from .RandomSearch import RandomSearch
-from .SimulatedAnnealing import SimulatedAnnealing
-from .GeneticAlgorithm import GeneticAlgorithm
-from .ArgParser import ArgParser
-from .JsonParser import JsonParser
-from .Logger import Logger
+from NeuralNetwork import NeuralNetwork
+from GridSearch import GridSearch
+from RandomSearch import RandomSearch
+from SimulatedAnnealing import SimulatedAnnealing
+from GeneticAlgorithm import GeneticAlgorithm
+from ArgParser import ArgParser
+from JsonParser import JsonParser
+from Logger import Logger
 
-from .DatabaseLoader import DatabaseLoader
+from DatabaseLoader import DatabaseLoader
 
 
 def main():
