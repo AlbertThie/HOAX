@@ -20,6 +20,10 @@ Launch from the terminal, call hoax with the database file and config file as ar
 ```
 hoax ["databasefile"] ["configfile"] (run in terminal)
 ```
+
+The HOAX process will run until completion, the duration depends on the settings in the config file. After completion, the hoax package will provide a database with the overview of the optimization process and the best performing neural network. The names of these files can be set in the config file, under *logging_file* and *model_filename* respectively. The optimization process file contains the scanned parameters and validation errors of all runs that were attempted by HOAX, in the HDF5 format. The best performing neural network can be used with the validator to run test trajectories and is provided as a pytorch network.
+
+
 Config file
 **************
 
@@ -60,7 +64,6 @@ The config file also contains the setup parameters for the database, neural netw
         "epochs" : 1000,
         "epoch_step"  : 50,
         "logging_file" : "logfile.txt",
-        "plotting_file" : "plottingfile.txt",
         "optimizer": "adam",
         "activation" : "tanh",
 		"loss_function" : "MSE",
@@ -77,5 +80,14 @@ The config file also contains the setup parameters for the database, neural netw
 }}
 
 ```
+
+Optimization output file
+**************
+
+
+
+
+
+
 
 
