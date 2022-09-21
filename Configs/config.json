@@ -41,7 +41,9 @@
 		"validation_ratio": 0.1,
 		 "hiddenlayer_size" : [10,100,10],
 		"hiddenlayer_number": [1,10,1],
-        "learning_rates" : [1,0.1,0.01,0.001,0.0001]
+        "learning_rates" : [1,0.1,0.01,0.001,0.0001],
+        "batch_size"  : [32,64,128,256,512]
+
 	}	
 			
 }}
