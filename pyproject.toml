@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hoax"
-version = "1.0.5"
+version = "1.0.61"
 description = "Hyperparemeter Optimzation Algorithms Explorer"
 readme = "README.md"
 authors = [{ name = "Albert Thie", email = "alb0rt@gmail.com" }]

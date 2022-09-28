@@ -1,15 +1,5 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
-from Hoax.Optimizer import Optimizer
-from Hoax.NeuralNetwork import NeuralNetwork
-
-
-# In[ ]:
-
+from .Optimizer import Optimizer
+from .NeuralNetwork import NeuralNetwork
 
 class GridSearch(Optimizer):
     

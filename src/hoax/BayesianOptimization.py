@@ -1,20 +1,10 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
-from Hoax.Optimizer import Optimizer
-from Hoax.NeuralNetwork import NeuralNetwork
+from .Optimizer import Optimizer
+from .NeuralNetwork import NeuralNetwork
 from bayes_opt import BayesianOptimization, UtilityFunction
 import math
 import random
 
-# In[ ]:
-
-
-
-class BayesianOptimization(Optimizer):
+class(Optimizer):
     
     
     def __init__(self,jsonparser,database,logger):
