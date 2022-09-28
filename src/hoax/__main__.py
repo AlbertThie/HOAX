@@ -36,6 +36,9 @@ def main():
     elif  jsonparser.getOptimizer() ==  "genetic_algorithm":
         optimizer = GeneticAlgorithm(jsonparser,database,logger)
         optimizer.run()
+        elif  jsonparser.getOptimizer() ==  "bayesian_optimizer":
+        optimizer = GeneticAlgorithm(jsonparser,database,logger)
+        optimizer.run()
     else:
         print("No optimizer found")
 
