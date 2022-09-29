@@ -7,6 +7,7 @@ from .GridSearch import GridSearch
 from .RandomSearch import RandomSearch
 from .SimulatedAnnealing import SimulatedAnnealing
 from .GeneticAlgorithm import GeneticAlgorithm
+from .BayesianOptimization import BayesianOptimizer
 from .ArgParser import ArgParser
 from .JsonParser import JsonParser
 from .Logger import Logger
@@ -36,7 +37,7 @@ def main():
         optimizer = GeneticAlgorithm(jsonparser,database,logger)
         optimizer.run()
     elif  jsonparser.getOptimizer() ==  "bayesian_optimization":
-        optimizer = BayesianOptimization(jsonparser,database,logger)
+        optimizer = BayesianOptimizer(jsonparser,database,logger)
         optimizer.run()
     else:
         print("No optimizer found")

@@ -34,8 +34,8 @@
         "optimizer": "adam",
         "activation" : "tanh",
 		"loss_function" : "MSE",
-        "model_filename" : "so2.pt"
-		
+        "model_filename" : "bayestest.pt",
+        "weights_file" : "bayesweights.ph"		
             },
     "bayesian_optimization":{
         "hiddenlayer_size" : [10,200,10],

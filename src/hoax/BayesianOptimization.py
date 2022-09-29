@@ -4,7 +4,7 @@ from bayes_opt import BayesianOptimization, UtilityFunction
 import math
 import random
 
-class(Optimizer):
+class BayesianOptimizer(Optimizer):
     
     
     def __init__(self,jsonparser,database,logger):
@@ -37,7 +37,7 @@ class(Optimizer):
                                  pbounds = { "Batch" : [self.lowerbounds[0],self.upperbounds[0]],
                             "Layers" : [self.lowerbounds[1],self.upperbounds[1]],
                             "Learning Rate" : [self.lowerbounds[2],self.upperbounds[2]],
-                            "Neurons" : : [self.lowerbounds[3],self.upperbounds[3]]}, 
+                            "Neurons" : [self.lowerbounds[3],self.upperbounds[3]]}, 
                                  verbose = 2, random_state = self.jsonparser.getConfig()['bayesian_optimization']["random_state"])
 
 
@@ -53,10 +53,14 @@ class(Optimizer):
     def run(self):
         lowest_error = 1000
         for n in range(self.iterations) :
-            next_point = optimizer.suggest(utility)
+
+            next_point = self.bayesianOptimizer.suggest(self.utilityfunction)
             next_points_int = dict(map(lambda x: (x[0],int(x[1])),next_point.items()))
             next_points_list = list(next_points_int.values())
-            next_point_string = str(next_point_string)
+            next_point_string = str(next_points_int)    
+            next_points_list[0],next_points_list[3] = next_points_list[3],next_points_list[0]
+            print(f"The next points list is {next_points_list}")
+
             if next_point_string in self.searchlog:
                 error = self.searchlog[next_point_string]
                 print(f"old error {error} from library")
@@ -65,7 +69,7 @@ class(Optimizer):
                 self.searchlog[next_point_string] = error
                 print(f"new error found {error} ")
             
-            print("error is: " + str(error) + "  lowest error  )" + str(lowest_error))
+            print("error is: " + str(error) + "  lowest error  " + str(lowest_error))
             if error < lowest_error:
                 new_network.export()
                 lowest_error = error
@@ -73,7 +77,9 @@ class(Optimizer):
             try:
                 # Update the optimizer with the evaluation results. 
                 # This should be in try-except to catch any errors!
-                optimizer.register(params = next_point, target = 1-error)
+                print(1-error)
+                print(next_point)
+                self.bayesianOptimizer.register(params = next_point, target = 1-error)
             except:
                 pass
             
