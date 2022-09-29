@@ -1,5 +1,5 @@
-from Hoax.Optimizer import Optimizer
-from Hoax.NeuralNetwork import NeuralNetwork
+from .Optimizer import Optimizer
+from .NeuralNetwork import NeuralNetwork
 import math
 import random
 

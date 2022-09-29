@@ -2,16 +2,16 @@ import numpy as np
 import math
 import random
 
-from NeuralNetwork import NeuralNetwork
-from GridSearch import GridSearch
-from RandomSearch import RandomSearch
-from SimulatedAnnealing import SimulatedAnnealing
-from GeneticAlgorithm import GeneticAlgorithm
-from ArgParser import ArgParser
-from JsonParser import JsonParser
-from Logger import Logger
-
-from DatabaseLoader import DatabaseLoader
+from .NeuralNetwork import NeuralNetwork
+from .GridSearch import GridSearch
+from .RandomSearch import RandomSearch
+from .SimulatedAnnealing import SimulatedAnnealing
+from .GeneticAlgorithm import GeneticAlgorithm
+from .BayesianOptimization import BayesianOptimizer
+from .ArgParser import ArgParser
+from .JsonParser import JsonParser
+from .Logger import Logger
+from .DatabaseLoader import DatabaseLoader
 
 
 def main():
@@ -35,6 +35,9 @@ def main():
 
     elif  jsonparser.getOptimizer() ==  "genetic_algorithm":
         optimizer = GeneticAlgorithm(jsonparser,database,logger)
+        optimizer.run()
+    elif  jsonparser.getOptimizer() ==  "bayesian_optimization":
+        optimizer = BayesianOptimizer(jsonparser,database,logger)
         optimizer.run()
     else:
         print("No optimizer found")

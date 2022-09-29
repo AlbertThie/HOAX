@@ -1,6 +1,5 @@
 import json
 
-
 class JsonParser():
     def __init__(self,configName):
         with open(configName) as f:
@@ -19,6 +18,8 @@ class JsonParser():
             return "simulated_annealing"
         elif 'genetic_algorithm' in self.config:
             return "genetic_algorithm"
+        elif "bayesian_optimization" in self.config:
+            return "bayesian_optimization"
         else:
             return "no_optimizer"
 
