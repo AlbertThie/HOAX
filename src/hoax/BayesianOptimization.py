@@ -3,6 +3,7 @@ from .NeuralNetwork import NeuralNetwork
 from bayes_opt import BayesianOptimization, UtilityFunction
 import math
 import random
+import numpy as np
 
 class BayesianOptimizer(Optimizer):
     
@@ -55,7 +56,7 @@ class BayesianOptimizer(Optimizer):
         for n in range(self.iterations) :
 
             next_point = self.bayesianOptimizer.suggest(self.utilityfunction)
-            next_points_int = dict(map(lambda x: (x[0],int(x[1])),next_point.items()))
+            next_points_int = dict(map(lambda x: (x[0],np.rint(x[1]).astype(np.int32)),next_point.items()))
             next_points_list = list(next_points_int.values())
             next_point_string = str(next_points_int)    
             next_points_list[0],next_points_list[3] = next_points_list[3],next_points_list[0]
