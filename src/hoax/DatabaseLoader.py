@@ -21,6 +21,18 @@ class DatabaseLoader:
         self.input, self.val_input, self.output, self.val_output = train_test_split(self.coordinatesout, self.energyout , test_size=databaseConfig['validation_ratio'])
 
 
+    def setInput(self,input):
+        self.input = input
+
+    def setValInput(self,val_input):
+        self.val_input = val_input
+
+    def setOutput(self,output):
+        self.output = output
+
+    def setValOutput(self,val_output):
+        self.val_output = val_output
+
     def getInput(self):
         return self.input
 
@@ -32,6 +44,12 @@ class DatabaseLoader:
 
     def getValOutput(self):
         return self.val_output
+
+    def getCoordinatesOut(self):
+        return self.coordinatesout
+
+    def getEnergyOut(self):
+        return self.energyout
 
 
 

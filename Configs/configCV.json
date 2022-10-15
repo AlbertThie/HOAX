@@ -1,0 +1,49 @@
+{"config": {
+    "debug": "on",
+    "database": { 
+        "file" : "so2a.db",
+        "properties": [
+        "energy",
+        "gradient"
+            ],
+        "crdmode": "cartesian",
+        "timestamp": "2021-04-23T18:25:43.511Z",
+        "mode": "ab-initio",
+        "ab-initio": {
+            "exe" : "QChem.exe",
+            "chg" : 0,
+            "mult": 1,
+            "exchange" : "pbe0",
+            "basis" : "cc-pvdz",
+            "max_scf_cycles" : 500,
+            "xc_grid" : "000075000302",
+            "mem_static" : 4000,
+            "mem_total" : 16000,
+            "sym_ignore" : true,
+            "set_iter" : 50,
+            "input_bohr" : true
+        }
+ 
+    },
+    "neural_network": {
+
+        "epochs" : 10000,
+        "epoch_step"  : 100,
+        "logging_file" : "so02.h5",
+        "plotting_file" : "plottingfile.txt",
+        "optimizer": "adam",
+        "activation" : "tanh",
+		"loss_function" : "MSE",
+        "model_filename" : "bayestest.pt",
+        "weights_file" : "bayesweights.ph"		
+            },
+    "crossvalidation":{
+        "hiddenlayer_size" : 100,
+        "validation_ratio": 0.1,
+        "hiddenlayer_number": 8,
+        "learning_rates" :  0.0001,
+        "batch_size" : 128,
+        "partition" : 10
+    }
+			
+}}

@@ -12,6 +12,7 @@ from .ArgParser import ArgParser
 from .JsonParser import JsonParser
 from .Logger import Logger
 from .DatabaseLoader import DatabaseLoader
+from .Crossvalidation import Crossvalidation
 
 
 def main():
@@ -38,6 +39,9 @@ def main():
         optimizer.run()
     elif  jsonparser.getOptimizer() ==  "bayesian_optimization":
         optimizer = BayesianOptimizer(jsonparser,database,logger)
+        optimizer.run()    
+    elif  jsonparser.getOptimizer() ==  "crossvalidation":
+        optimizer = Crossvalidation(jsonparser,database,logger)
         optimizer.run()
     else:
         print("No optimizer found")

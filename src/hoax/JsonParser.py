@@ -20,6 +20,8 @@ class JsonParser():
             return "genetic_algorithm"
         elif "bayesian_optimization" in self.config:
             return "bayesian_optimization"
+        elif "crossvalidation" in self.config:
+            return "crossvalidation"
         else:
             return "no_optimizer"
 
