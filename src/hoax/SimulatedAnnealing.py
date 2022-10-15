@@ -1,5 +1,6 @@
 from .Optimizer import Optimizer
 from .NeuralNetwork import NeuralNetwork
+from sklearn.model_selection import KFold 
 import math
 import random
 
@@ -74,30 +75,71 @@ class SimulatedAnnealing(Optimizer):
             
         lowest_error = network.train()
         best_network = network.export()
-     
-        for n in range(self.iterations) :
-            
-            trialpositions = self.move(positions).copy()
-            
-            if str(trialpositions) in self.searchlog:
-                error = self.searchlog[str(trialpositions)]
-                print(f"old error {error} from library")
-            else:
-                error,new_network = self.getNewNetwork(trialpositions) 
-                self.searchlog[str(trialpositions)] = error
-                print(f"new error found {error} ")
-            
-            print("error is: " + str(error) + "  lowest error  )" + str(lowest_error))
-            acceptance_threshold = math.exp(-(error-lowest_error)/ (self.temperature / float(n + 1)))
-            print(acceptance_threshold)
-            if error < lowest_error :
-                new_network.export()
-                lowest_error = error
-                positions = trialpositions.copy()
+        if (self.jsonparser.getConfig()['simulated_annealing']["crossvalidation"]):
+            X = self.database.getCoordinatesOut().copy()
+            y = self.database.getEnergyOut().copy()
+            kf = KFold(n_splits=self.jsonparser.getConfig()['simulated_annealing']['partitions']) 
+            kf.get_n_splits(X)
+            errors = []
+            indeces =list(kf.split(X))
+                
+            for n in range(self.iterations):
+                train_index,test_index = indeces[n%10]
+                X_train, X_test = X[train_index], X[test_index]
+                y_train, y_test = y[train_index], y[test_index]
+                self.database.setInput(X_train)
+                self.database.setValInput(X_test)
+                self.database.setOutput(y_train)
+                self.database.setValOutput(y_test)
 
-            elif random.random() < acceptance_threshold :
-                lowest_error = error
-                positions = trialpositions.copy()
+                trialpositions = self.move(positions).copy()
+                
+                if str(trialpositions) in self.searchlog:
+                    error = self.searchlog[str(trialpositions)]
+                    print(f"old error {error} from library")
+                else:
+                    error,new_network = self.getNewNetwork(trialpositions) 
+                    self.searchlog[str(trialpositions)] = error
+                    print(f"new error found {error} ")
+                
+                print("error is: " + str(error) + "  lowest error  )" + str(lowest_error))
+                acceptance_threshold = math.exp(-(error-lowest_error)/ (self.temperature / float(n + 1)))
+                print(acceptance_threshold)
+                if error < lowest_error :
+                    new_network.export()
+                    lowest_error = error
+                    positions = trialpositions.copy()
+
+                elif random.random() < acceptance_threshold :
+                    lowest_error = error
+                    positions = trialpositions.copy()
+                        
+
+        else:
+
+            for n in range(self.iterations):
+
+                trialpositions = self.move(positions).copy()
+                
+                if str(trialpositions) in self.searchlog:
+                    error = self.searchlog[str(trialpositions)]
+                    print(f"old error {error} from library")
+                else:
+                    error,new_network = self.getNewNetwork(trialpositions) 
+                    self.searchlog[str(trialpositions)] = error
+                    print(f"new error found {error} ")
+                
+                print("error is: " + str(error) + "  lowest error  )" + str(lowest_error))
+                acceptance_threshold = math.exp(-(error-lowest_error)/ (self.temperature / float(n + 1)))
+                print(acceptance_threshold)
+                if error < lowest_error :
+                    new_network.export()
+                    lowest_error = error
+                    positions = trialpositions.copy()
+
+                elif random.random() < acceptance_threshold :
+                    lowest_error = error
+                    positions = trialpositions.copy()
                         
     
     
